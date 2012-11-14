@@ -1,1 +1,2 @@
-set colorcolumn=0     " Disable vertical textwidth margin.
+set colorcolumn=0       " Disable vertical textwidth margin.
+

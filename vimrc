@@ -19,13 +19,25 @@ set nostartofline
 set nobackup            " No backup
 
 set nowrap              " Do not break long lines
-if version >= 703
-  set textwidth=80
-  set formatoptions-=t  " Do not auto-wrap text using textwidth
-  set formatoptions-=o  " Do not insert automatically the current comment
+set textwidth=80
+set formatoptions-=t    " Do not auto-wrap text using textwidth
+set formatoptions-=o    " Do not insert automatically the current comment
                         " leader after hitting 'o' or 'O' in Normal mode.
-  set colorcolumn=+0
+set colorcolumn=+0
+
+filetype plugin indent on
+syntax on
+
+set laststatus=2
+set statusline=%<%F%h%m%r%h%w%y\ %{&ff}%=line:%l/%L\ col:%c%V\ ascii:%b\ %P
+hi StatusLine ctermfg=white ctermbg=none
+if version >= 700
+  au InsertEnter * hi StatusLine ctermbg=1
+  au InsertLeave * hi StatusLine ctermfg=white ctermbg=none
 endif
+
+set list
+set listchars=trail:-
 
 iabbrev teh the
 iabbrev wheter whether
