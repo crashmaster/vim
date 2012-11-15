@@ -13,7 +13,7 @@ set history=1000        " Size of the history table of the entered commands
 
 set autoindent          " Copy indent from current line when starting new line
 set cindent             " Enables automatic C program indenting
-set cinoptions=b1,(0    " Sime fine-tuning for cindent
+set cinoptions=b1,(0    " Some fine-tuning for cindent
 set nostartofline
 
 set nobackup            " No backup
