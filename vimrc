@@ -9,21 +9,33 @@ set incsearch           " Search while typing
 set ignorecase          " Does not matter if lower or upper case
 set smartcase           " Case is ignored unless they are mixed
 
-set history=1000        " Size of the history table of the entered commands
+set history=5000        " Size of the history table of the entered commands
 
-set autoindent          " Copy indent from current line when starting new line
-set cindent             " Enables automatic C program indenting
-set cinoptions=b1,(0    " Some fine-tuning for cindent
 set nostartofline
 
+set expandtab           " Insert spaces instead of tabs
+set shiftwidth=4        " Number of spaces used for each step of indent
+set tabstop=4           " Number of spaces that a tab in the file counts for
+set softtabstop=4
+
+set autowriteall!       " Inverse of autowriteall
 set nobackup            " No backup
 
+set backspace=indent,eol,start
+
+set showcmd
 set nowrap              " Do not break long lines
-set textwidth=80
-set formatoptions-=t    " Do not auto-wrap text using textwidth
-set formatoptions-=o    " Do not insert automatically the current comment
-                        " leader after hitting 'o' or 'O' in Normal mode.
-set colorcolumn=+0
+
+set completeopt=menu,menuone,longest " Show no preview window
+set pumheight=20        " Pop up menu has maximal 20 rows
+
+if version >= 703
+    set textwidth=80
+    set formatoptions-=t    " Do not auto-wrap text using textwidth
+    set formatoptions-=o    " Do not insert automatically the current comment
+                            " leader after hitting 'o' or 'O' in Normal mode.
+    set colorcolumn=+0
+endif
 
 filetype plugin indent on
 syntax on
@@ -41,3 +53,5 @@ set listchars=trail:-
 
 iabbrev teh the
 iabbrev wheter whether
+
+nnoremap <F3> :b#<CR>
