@@ -20,11 +20,13 @@ set softtabstop=4
 
 set autowriteall!       " Inverse of autowriteall
 set nobackup            " No backup
+set hidden              " Do not unload buffer, when abandoned
 
 set backspace=indent,eol,start
 
 set showcmd
 set nowrap              " Do not break long lines
+set diffopt=context:777 " Show lots of context in diff mode
 
 set completeopt=menu,menuone,longest " Show no preview window
 set pumheight=20        " Pop up menu has maximal 20 rows
@@ -39,6 +41,8 @@ endif
 
 filetype plugin indent on
 syntax on
+" Set status line to fg: white and bg: none, independent from the color scheme
+hi StatusLine ctermfg=white ctermbg=none
 
 set laststatus=2
 set statusline=%<%F%h%m%r%h%w%y\ %{&ff}%=line:%l/%L\ col:%c%V\ ascii:%b\ %P
@@ -51,7 +55,26 @@ endif
 set list
 set listchars=trail:-
 
-iabbrev teh the
-iabbrev wheter whether
+fu! SeeTabs()
+  set listchars=tab:\T\ 
+endfunc
+com! -nargs=0 SeeTabs :call SeeTabs()
 
+fu! HideTabs()
+  set listchars=trail:-
+endfunc
+com! -nargs=0 HideTabs :call HideTabs()
+
+
+" Some useful insert mode only abbreviations
+iabbrev teh the
+iabbrev Teh The
+iabbrev wheter whether
+iabbrev Wheter Whether
+iabbrev thsi this
+iabbrev Thsi This
+
+" Some shortcuts
+
+" Switch buffer back and forth
 nnoremap <F3> :b#<CR>
