@@ -65,7 +65,6 @@ fu! HideTabs()
 endfunc
 com! -nargs=0 HideTabs :call HideTabs()
 
-
 " Some useful insert mode only abbreviations
 iabbrev teh the
 iabbrev Teh The
