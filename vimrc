@@ -41,11 +41,11 @@ set completeopt=menu,menuone,longest
 set pumheight=20        " Pop up menu has maximal 20 rows
 
 if version >= 703
-    set textwidth=80
+    set textwidth=80        " Maximum width of text that is being inserted
     set formatoptions-=t    " Do not auto-wrap text using textwidth
     set formatoptions-=o    " Do not insert automatically the current comment
                             " leader after hitting 'o' or 'O' in Normal mode.
-    set colorcolumn=+0
+    set colorcolumn=+0      " Column highlighted, relative to textwidth
 endif
 
 filetype plugin indent on
