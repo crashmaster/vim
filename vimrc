@@ -11,7 +11,7 @@ set smartcase           " Case is ignored unless they are mixed
 
 set history=5000        " Size of the history table of the entered commands
 
-set nostartofline
+set nostartofline       " Cursor is kept in the same column
 
 set expandtab           " Insert spaces instead of tabs
 set shiftwidth=4        " Number of spaces used for each step of indent
@@ -22,6 +22,10 @@ set autowriteall!       " Inverse of autowriteall
 set nobackup            " No backup
 set hidden              " Do not unload buffer, when abandoned
 
+" Each item allows a way to backspace over something:
+"   indent -> allow backspacing over autoindent
+"   eol    -> allow backspacing over line breaks (join lines)
+"   start  -> allow backspacing over the start of insert
 set backspace=indent,eol,start
 
 set showcmd
