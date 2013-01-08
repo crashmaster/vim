@@ -50,7 +50,20 @@ endif
 
 filetype plugin on          " Enabled loading of plugin files
 filetype indent on          " Enabled loading of indent files
+
 syntax on                   " Syntax highlighting, Vim overrules settings
+
+" Make sure, you have inkpot color scheme installed and
+" your terminal should support 256 colors
+if has("gui_running")
+  colorscheme inkpot
+else
+  set t_Co=256
+  let g:inkpot_black_background = 1
+  colorscheme inkpot
+endif
+
+
 " Set status line to fg: white and bg: none, independent from the color scheme
 hi StatusLine ctermfg=white ctermbg=none
 
