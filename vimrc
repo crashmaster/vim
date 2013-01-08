@@ -23,9 +23,9 @@ set nobackup            " No backup
 set hidden              " Do not unload buffer, when abandoned
 
 " Each item allows a way to backspace over something:
-"   indent -> allow backspacing over autoindent
-"   eol    -> allow backspacing over line breaks (join lines)
-"   start  -> allow backspacing over the start of insert
+"   indent      -> allow backspacing over autoindent
+"   eol         -> allow backspacing over line breaks (join lines)
+"   start       -> allow backspacing over the start of insert
 set backspace=indent,eol,start
 
 set showcmd             " Show (partial) command in the last line of the screen
@@ -33,28 +33,28 @@ set nowrap              " Do not break long lines
 set diffopt=context:777 " Show lots of context in diff mode
 
 " A comma separated list of options for insert mode completion:
-"    menu    -> use a popup menu to show the possible completions
-"    menuone -> use the popup menu also when there is only one match
-"    longest -> only insert the longest common text of the matches
-"    preview -> show extra information in the preview window (OMITTED)
+"    menu       -> use a popup menu to show the possible completions
+"    menuone    -> use the popup menu also when there is only one match
+"    longest    -> only insert the longest common text of the matches
+"    preview    -> show extra information in the preview window (OMITTED)
 set completeopt=menu,menuone,longest
 set pumheight=20        " Pop up menu has maximal 20 rows
 
 if version >= 703
-    set textwidth=80        " Maximum width of text that is being inserted
-    set formatoptions-=t    " Do not auto-wrap text using textwidth
-    set formatoptions-=o    " Do not insert automatically the current comment
-                            " leader after hitting 'o' or 'O' in Normal mode.
-    set colorcolumn=+0      " Column highlighted, relative to textwidth
+  set textwidth=80      " Maximum width of text that is being inserted
+  set formatoptions-=t  " Do not auto-wrap text using textwidth
+  set formatoptions-=o  " Do not insert automatically the current comment
+                        " leader after hitting 'o' or 'O' in Normal mode
+  set colorcolumn=+0    " Column highlighted, relative to textwidth
 endif
 
-filetype plugin on          " Enabled loading of plugin files
-filetype indent on          " Enabled loading of indent files
+filetype plugin on      " Enabled loading of plugin files
+filetype indent on      " Enabled loading of indent files
 
-syntax on                   " Syntax highlighting, Vim overrules settings
+syntax on               " Syntax highlighting, Vim overrules settings
 
-" Make sure, you have inkpot color scheme installed and
-" your terminal should support 256 colors
+" Make sure, you have inkpot color scheme installed and your terminal
+" should support 256 colors
 if has("gui_running")
   colorscheme inkpot
 else
@@ -62,9 +62,6 @@ else
   let g:inkpot_black_background = 1
   colorscheme inkpot
 endif
-
-" Set status line to fg: white and bg: none, independent from the color scheme
-hi StatusLine ctermfg=white ctermbg=none
 
 set laststatus=2
 set statusline=%<%F%h%m%r%h%w%y\ %{&ff}%=line:%l/%L\ col:%c%V\ ascii:%b\ %P
@@ -99,3 +96,13 @@ iabbrev Thsi This
 
 " Switch buffer back and forth
 nnoremap <F3> :b#<CR>
+
+" Load site specific stuff, if present
+if filereadable("/home/" . $USER . "/.vimrc.site")
+  source /home/$USER/.vimrc.site
+endif
+
+" Set status line's color to fg: white and bg: none,
+" independent from the current color scheme
+hi StatusLine ctermfg=white ctermbg=none
+
