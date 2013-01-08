@@ -63,7 +63,6 @@ else
   colorscheme inkpot
 endif
 
-
 " Set status line to fg: white and bg: none, independent from the color scheme
 hi StatusLine ctermfg=white ctermbg=none
 
