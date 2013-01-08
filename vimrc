@@ -32,7 +32,12 @@ set showcmd             " Show (partial) command in the last line of the screen
 set nowrap              " Do not break long lines
 set diffopt=context:777 " Show lots of context in diff mode
 
-set completeopt=menu,menuone,longest " Show no preview window
+" A comma separated list of options for insert mode completion:
+"    menu    -> use a popup menu to show the possible completions
+"    menuone -> use the popup menu also when there is only one match
+"    longest -> only insert the longest common text of the matches
+"    preview -> show extra information in the preview window (OMITTED)
+set completeopt=menu,menuone,longest
 set pumheight=20        " Pop up menu has maximal 20 rows
 
 if version >= 703
