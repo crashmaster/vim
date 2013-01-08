@@ -28,7 +28,7 @@ set hidden              " Do not unload buffer, when abandoned
 "   start  -> allow backspacing over the start of insert
 set backspace=indent,eol,start
 
-set showcmd
+set showcmd             " Show (partial) command in the last line of the screen
 set nowrap              " Do not break long lines
 set diffopt=context:777 " Show lots of context in diff mode
 
