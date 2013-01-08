@@ -48,8 +48,9 @@ if version >= 703
     set colorcolumn=+0      " Column highlighted, relative to textwidth
 endif
 
-filetype plugin indent on
-syntax on
+filetype plugin on          " Enabled loading of plugin files
+filetype indent on          " Enabled loading of indent files
+syntax on                   " Syntax highlighting, Vim overrules settings
 " Set status line to fg: white and bg: none, independent from the color scheme
 hi StatusLine ctermfg=white ctermbg=none
 
