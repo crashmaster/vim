@@ -14,4 +14,3 @@ function! SourceSiteConfig(scriptPath)
     endif
 endfunction
 
-

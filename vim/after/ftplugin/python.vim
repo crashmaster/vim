@@ -9,3 +9,4 @@ if version >= 703
   set formatoptions-=t
   set colorcolumn=+1
 endif
+
