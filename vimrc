@@ -82,8 +82,6 @@ iabbrev Wheter Whether
 iabbrev thsi this
 iabbrev Thsi This
 
-" Some shortcuts
-
 " Switch buffer back and forth
 nnoremap <F3> :b#<CR>
 
