@@ -31,8 +31,13 @@ let g:SuperTabDefaultCompletionType = "context"
 
 " Some clang complete options:
 let g:clang_complete_auto = 0
-let g:clang_library_path = ":-)"
+let g:clang_library_path = ""   " The g:clang_library_path is site specific
 let g:clang_use_library = 1
 let g:clang_complete_copen = 1
 let g:clang_hl_errors = 0
 let g:clang_periodic_quickfix = 1
+
+if exists("*SourceSiteConfig")
+    call SourceSiteConfig(escape(expand('<sfile>:p'), '\'))
+endif
+

@@ -74,16 +74,6 @@ endif
 set list
 set listchars=trail:-
 
-fu! SeeTabs()
-  set listchars=tab:\T\ 
-endfunc
-com! -nargs=0 SeeTabs :call SeeTabs()
-
-fu! HideTabs()
-  set listchars=trail:-
-endfunc
-com! -nargs=0 HideTabs :call HideTabs()
-
 " Some useful insert mode only abbreviations
 iabbrev teh the
 iabbrev Teh The
@@ -97,9 +87,11 @@ iabbrev Thsi This
 " Switch buffer back and forth
 nnoremap <F3> :b#<CR>
 
-" Load site specific stuff, if present
-if filereadable("/home/" . $USER . "/.vimrc.site")
-  source /home/$USER/.vimrc.site
+" Load the user defined functions, as they are needed! :-)
+execute "source " . escape(expand('<sfile>:p:h'), '\') . "/.vim/functions/misc.vim"
+
+if exists("*SourceSiteConfig")
+    call SourceSiteConfig(escape(expand('<sfile>:p'), '\'))
 endif
 
 " Set status line's color to fg: white and bg: none,
