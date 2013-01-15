@@ -96,3 +96,7 @@ endif
 " independent from the current color scheme
 hi StatusLine ctermfg=white ctermbg=none
 
+" Loop through the vimrc config files and source them
+for conf_file in split(globpath("$HOME/.vim/config", '*'), '\n')
+    execute "source " . conf_file
+endfor
