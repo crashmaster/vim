@@ -1,5 +1,7 @@
 " This config file contains settings related to the editor's look
 
+syntax on               " Syntax highlighting, Vim overrules settings
+
 set number              " Show line numbers
 set numberwidth=6       " Line numbers 6 charaters wide
 
@@ -47,4 +49,8 @@ endif
 " Show TAB-s and superfluous SPACE characters
 set list
 set listchars=trail:-
+
+if exists("*SourceSiteConfig")
+    call SourceSiteConfig(escape(expand('<sfile>:p'), '\'))
+endif
 

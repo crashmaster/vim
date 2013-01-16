@@ -8,4 +8,7 @@ iabbrev Wheter Whether
 iabbrev thsi this
 iabbrev Thsi This
 
+if exists("*SourceSiteConfig")
+    call SourceSiteConfig(escape(expand('<sfile>:p'), '\'))
+endif
 
