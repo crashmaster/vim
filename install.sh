@@ -7,34 +7,60 @@ file_list() {
     done
 }
 
-check_dir_create() {
-    local tmp_dir=""
-    tmp_dir=`mktemp -p ~/.vimrc.XXXXXXXXXX` || return 1
-    rm -rf $TMPFILE || return 1
-    return 0
-}
+# check_dir_create() {
+#     local tmp_dir=""
+#     tmp_dir=`mktemp -p ~/.vimrc.XXXXXXXXXX` || return 1
+#     rm -rf $TMPFILE || return 1
+#     return 0
+# }
 
 install() {
-    local err=0
+    local error_flag=0
     for i in `find vim*`
     do
-        [ -d $i -a -r $i ] && echo "mkdir -p ~/.$i"
-        [ -f $i -a -r $i ] && echo "cp -i $i ~/.$i"
-    done
-
-    while true
-    do
-        if [ 0 -ne check_write ]
+        # Create directory when needed
+        if [ -d $i -a ! -d  ~/.$i ]
         then
-            err=1
-            break
+            echo " ~/.$i does NOT exist, call: mkdir -p ~/.$i"
         fi
-
-        break
+        # Handle files
+        if [ -f $i -a -f ~/.$i ]
+        then
+            echo "target file: ~/.$i exists"
+            while true
+            do
+                read -p "(d)iff, (o)verwrite, overwrite (a)ll, (s)kip, (q)uit : " tmp
+                case $tmp in
+                    d)
+                        diff -u $i ~/.$i
+                        ;;
+                    o)
+                        echo "  original replaced"
+                        break
+                        ;;
+                    s)
+                        echo "  original kept"
+                        break
+                        ;;
+                    q)
+                        exit 1
+                        ;;
+                    *)
+                        echo "incorrect choice"
+                        ;;
+                esac
+            done
+        fi
     done
+
+    if [ 1 -eq $error_flag ]
+    then
+        echo "install failed, calling uninstall"
+        uninstall
+    fi
 }
 
-remove() {
+uninstall() {
     file_list
 }
 
@@ -46,9 +72,9 @@ case "$@" in
         echo "install"
         install
         ;;
-    -r|--remove)
-        echo "remove"
-        remove
+    -u|--uninstall)
+        echo "uninstall"
+        uninstall
         ;;
     *)
         echo "error"
