@@ -1,10 +1,14 @@
 #!/usr/bin/sh
 
 SCRIPT_NAME=`basename $0`
+PRINTF=/usr/bin/printf
+EXPR=/usr/bin/expr
+MKDIR=/bin/mkdir
+CP=/bin/cp
 
 usage() {
-    printf "usage: $SCRIPT_NAME [-h|-i|-u]\n\n"
-    printf "Installs the Crashmaster Vim Configuration :-)\n"
+    $PRINTF "usage: $SCRIPT_NAME [-h|-i|-u]\n\n"
+    $PRINTF "Installs the Crashmaster Vim Configuration o_O\n"
 }
 
 install() {
@@ -12,55 +16,55 @@ install() {
 
     for i in `find vim*`
     do
-        result_indent=`expr 72 - \( 2 \* ${#i} \)`
-        printf "%s -> ~/.%s" $i $i
+        result_indent=`$EXPR 72 - \( 2 \* ${#i} \)`
+        $PRINTF "%s -> ~/.%s" $i $i
 
         # directories
         if [ -d $i -a ! -d  ~/.$i ]
         then
-            printf "%*s\n" $result_indent "[MKDIR]"
-            \mkdir -p ~/.$i || exit 1
+            $PRINTF "%*s\n" $result_indent "[MKDIR]"
+            $MKDIR -p ~/.$i || exit 1
         elif [ -d $i -a -d  ~/.$i ]
         then
-            printf "%*s\n" $result_indent "[SKIP]"
+            $PRINTF "%*s\n" $result_indent "[SKIP]"
         fi
 
         # files
         if [ -f $i -a ! -f ~/.$i ]
         then
-            printf "%*s\n" $result_indent "[COPY]"
-            \cp $i ~/.$i || exit 1
+            $PRINTF "%*s\n" $result_indent "[COPY]"
+            $CP $i ~/.$i || exit 1
         elif [ -f $i -a -f ~/.$i ]
         then
             if diff -u ~/.$i $i > /dev/null 2>&1
             then
-                printf "%*s\n" $result_indent "[SKIP]"
+                $PRINTF "%*s\n" $result_indent "[SKIP]"
                 continue
             fi
             while true
             do
-                printf "\n"
+                $PRINTF "\n"
                 read -n 1 -p "  (d)iff, (o)verwrite, (s)kip or (q)uit? " tmp
-                printf "\n"
+                $PRINTF "\n"
                 case $tmp in
                     d)
-                        printf "\n"
+                        $PRINTF "\n"
                         diff -u ~/.$i $i
                         ;;
                     o)
-                        printf "%s -> ~/.%s%*s\n" $i $i $result_indent "[COPY]"
-                        \cp $i ~/.$i || exit 1
+                        $PRINTF "%s -> ~/.%s%*s\n" $i $i $result_indent "[COPY]"
+                        $CP $i ~/.$i || exit 1
                         break
                         ;;
                     s)
-                        printf "%s -> ~/.%s%*s\n" $i $i $result_indent "[SKIP]"
+                        $PRINTF "%s -> ~/.%s%*s\n" $i $i $result_indent "[SKIP]"
                         break
                         ;;
                     q)
-                        exit 1
+                        exit 0
                         ;;
                     *)
-                        printf "    %s: incorrect choice" $tmp
+                        $PRINTF "    %s: incorrect choice" $tmp
                         ;;
                 esac
             done
@@ -69,7 +73,7 @@ install() {
 }
 
 uninstall() {
-    printf "Muu!\n"
+    $PRINTF "Muu!\n"
 }
 
 case "$@" in
@@ -84,7 +88,7 @@ case "$@" in
         uninstall
         ;;
     *)
-        printf "%s: incorrect option\n" $@
+        $PRINTF "%s: incorrect option\n" $@
         usage
         exit 1
         ;;
