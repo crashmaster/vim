@@ -1,83 +1,92 @@
 #!/usr/bin/sh
 
-file_list() {
-    for i in `find vim*`
-    do
-        echo $i
-    done
+SCRIPT_NAME=`basename $0`
+
+usage() {
+    printf "usage: $SCRIPT_NAME [-h|-i|-u]\n\n"
+    printf "Installs the Crashmaster Vim Configuration :-)\n"
 }
 
-# check_dir_create() {
-#     local tmp_dir=""
-#     tmp_dir=`mktemp -p ~/.vimrc.XXXXXXXXXX` || return 1
-#     rm -rf $TMPFILE || return 1
-#     return 0
-# }
-
 install() {
-    local error_flag=0
+    local result_indent=0
+
     for i in `find vim*`
     do
-        # Create directory when needed
+        result_indent=`expr 72 - \( 2 \* ${#i} \)`
+        printf "%s -> ~/.%s" $i $i
+
+        # directories
         if [ -d $i -a ! -d  ~/.$i ]
         then
-            echo " ~/.$i does NOT exist, call: mkdir -p ~/.$i"
-        fi
-        # Handle files
-        if [ -f $i -a -f ~/.$i ]
+            printf "%*s\n" $result_indent "[MKDIR]"
+            \mkdir -p ~/.$i || exit 1
+        elif [ -d $i -a -d  ~/.$i ]
         then
-            echo "target file: ~/.$i exists"
+            printf "%*s\n" $result_indent "[SKIP]"
+        fi
+
+        # files
+        if [ -f $i -a ! -f ~/.$i ]
+        then
+            printf "%*s\n" $result_indent "[COPY]"
+            \cp $i ~/.$i || exit 1
+        elif [ -f $i -a -f ~/.$i ]
+        then
+            if diff -u ~/.$i $i > /dev/null 2>&1
+            then
+                printf "%*s\n" $result_indent "[SKIP]"
+                continue
+            fi
             while true
             do
-                read -p "(d)iff, (o)verwrite, overwrite (a)ll, (s)kip, (q)uit : " tmp
+                printf "\n"
+                read -n 1 -p "  (d)iff, (o)verwrite, (s)kip or (q)uit? " tmp
+                printf "\n"
                 case $tmp in
                     d)
-                        diff -u $i ~/.$i
+                        printf "\n"
+                        diff -u ~/.$i $i
                         ;;
                     o)
-                        echo "  original replaced"
+                        printf "%s -> ~/.%s%*s\n" $i $i $result_indent "[COPY]"
+                        \cp $i ~/.$i || exit 1
                         break
                         ;;
                     s)
-                        echo "  original kept"
+                        printf "%s -> ~/.%s%*s\n" $i $i $result_indent "[SKIP]"
                         break
                         ;;
                     q)
                         exit 1
                         ;;
                     *)
-                        echo "incorrect choice"
+                        printf "    %s: incorrect choice" $tmp
                         ;;
                 esac
             done
         fi
     done
-
-    if [ 1 -eq $error_flag ]
-    then
-        echo "install failed, calling uninstall"
-        uninstall
-    fi
 }
 
 uninstall() {
-    file_list
+    printf "Muu!\n"
 }
 
 case "$@" in
     -h|--help)
-        echo "help"
+        usage
         ;;
     -i|--install)
-        echo "install"
         install
         ;;
     -u|--uninstall)
-        echo "uninstall"
+        # TODO
         uninstall
         ;;
     *)
-        echo "error"
+        printf "%s: incorrect option\n" $@
+        usage
+        exit 1
         ;;
 esac
 
