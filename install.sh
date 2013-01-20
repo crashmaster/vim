@@ -1,6 +1,7 @@
 #!/usr/bin/sh
 
 SCRIPT_NAME=`basename $0`
+SCRIPT_DIR=`dirname $0`
 PRINTF=/usr/bin/printf
 EXPR=/usr/bin/expr
 MKDIR=/bin/mkdir
@@ -13,30 +14,34 @@ usage() {
 
 install() {
     local result_indent=0
+    local repo_rel_path=""
+    local target_path=""
 
-    for i in `find vim*`
+    for i in `find $SCRIPT_DIR/vim*`
     do
-        result_indent=`$EXPR 72 - \( 2 \* ${#i} \)`
-        $PRINTF "%s -> ~/.%s" $i $i
+        repo_rel_path=`echo $i | sed -n 's|.*/\(vim.*\)|\1|p'`
+        target_path=~/.$repo_rel_path
+        result_indent=`$EXPR 72 - \( 2 \* ${#repo_rel_path} \)`
+        $PRINTF "repo::%s -> %s" "$repo_rel_path" "$target_path"
 
         # directories
-        if [ -d $i -a ! -d  ~/.$i ]
+        if [ -d $i -a ! -d $target_path ]
         then
+            $MKDIR -p $target_path || exit 1
             $PRINTF "%*s\n" $result_indent "[MKDIR]"
-            $MKDIR -p ~/.$i || exit 1
-        elif [ -d $i -a -d  ~/.$i ]
+        elif [ -d $i -a -d $target_path ]
         then
             $PRINTF "%*s\n" $result_indent "[SKIP]"
         fi
 
         # files
-        if [ -f $i -a ! -f ~/.$i ]
+        if [ -f $i -a ! -f $target_path ]
         then
+            $CP $i $target_path || exit 1
             $PRINTF "%*s\n" $result_indent "[COPY]"
-            $CP $i ~/.$i || exit 1
-        elif [ -f $i -a -f ~/.$i ]
+        elif [ -f $i -a -f $target_path ]
         then
-            if diff -u ~/.$i $i > /dev/null 2>&1
+            if diff -u $target_path $i > /dev/null 2>&1
             then
                 $PRINTF "%*s\n" $result_indent "[SKIP]"
                 continue
@@ -49,15 +54,17 @@ install() {
                 case $tmp in
                     d)
                         $PRINTF "\n"
-                        diff -u ~/.$i $i
+                        diff -u $target_path $i
                         ;;
                     o)
-                        $PRINTF "%s -> ~/.%s%*s\n" $i $i $result_indent "[COPY]"
-                        $CP $i ~/.$i || exit 1
+                        $PRINTF "repo::%s -> %s" "$repo_rel_path" "$target_path"
+                        $CP $i $target_path || exit 1
+                        $PRINTF "%*s\n" $result_indent "[COPY]"
                         break
                         ;;
                     s)
-                        $PRINTF "%s -> ~/.%s%*s\n" $i $i $result_indent "[SKIP]"
+                        $PRINTF "repo::%s -> %s" "$repo_rel_path" "$target_path"
+                        $PRINTF "%*s\n" $result_indent "[SKIP]"
                         break
                         ;;
                     q)
