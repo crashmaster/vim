@@ -13,6 +13,7 @@ DIFF=/usr/bin/diff
 [ ! -x $EXPR ] && echo "$EXPR not found" && exit 1
 [ ! -x $MKDIR ] && echo "$MKDIR not found" && exit 1
 [ ! -x $CP ] && echo "$CP not found" && exit 1
+[ ! -x $DIFF ] && echo "$DIFF not found" && exit 1
 
 usage() {
     $PRINTF "usage: $SCRIPT_NAME [-h|-i|-u]\n\n"
