@@ -11,6 +11,7 @@ CP=/bin/cp
 RM=/bin/rm
 DIFF=/usr/bin/diff
 LS=/bin/ls
+FIND=/usr/bin/find
 WC=/usr/bin/wc
 SORT=/usr/bin/sort
 
@@ -23,7 +24,9 @@ SORT=/usr/bin/sort
 [ ! -x $RM ] && echo "$RM not found" && exit 1
 [ ! -x $DIFF ] && echo "$DIFF not found" && exit 1
 [ ! -x $LS ] && echo "$LS not found" && exit 1
+[ ! -x $FIND ] && echo "$FIND not found" && exit 1
 [ ! -x $WC ] && echo "$WC not found" && exit 1
+[ ! -x $SORT ] && echo "$SORT not found" && exit 1
 
 usage() {
     $PRINTF "usage: $SCRIPT_NAME [-h|-i|-u]\n\n"
@@ -39,7 +42,7 @@ install() {
     local result_indent=0
     local target_path=""
 
-    for i in `find $REPO_BASE/vim*`
+    for i in `$FIND $REPO_BASE/vim*`
     do
         target_path=~/.`echo $i | sed -n 's|.*/\(vim.*\)|\1|p'`
         result_indent=`$EXPR 72 - ${#target_path}`
@@ -124,7 +127,7 @@ uninstall() {
     done
 
     # files
-    for i in `find $REPO_BASE/vim*`
+    for i in `$FIND $REPO_BASE/vim*`
     do
         [ ! -f $i ] && continue
         repo_path=`echo $i | sed -n 's|.*/\(vim.*\)|\1|p'`
@@ -139,14 +142,14 @@ uninstall() {
     done
 
     # directories
-    for i in `find $REPO_BASE/vim* | $SORT -r`
+    for i in `$FIND $REPO_BASE/vim* | $SORT -r`
     do
         [ ! -d $i ] && continue
         repo_path=`echo $i | sed -n 's|.*/\(vim.*\)|\1|p'`
         target_path=~/.$repo_path
         result_indent=`$EXPR 72 - ${#target_path}`
         $PRINTF "  -> %s" "$target_path"
-        if [ `ls -a $target_path | wc -l` -lt 3 ]
+        if [ `$LS -a $target_path | $WC -l` -lt 3 ]
         then
             $RMDIR $target_path || error_result $result_indent
             $PRINTF "%*s\n" $result_indent "[RMDIR]"
