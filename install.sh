@@ -1,11 +1,18 @@
 #!/usr/bin/sh
 
 SCRIPT_NAME=`basename $0`
-SCRIPT_DIR=`dirname $0`
+REPO_BASE=`dirname $0`
+
 PRINTF=/usr/bin/printf
 EXPR=/usr/bin/expr
 MKDIR=/bin/mkdir
 CP=/bin/cp
+DIFF=/usr/bin/diff
+
+[ ! -x $PRINTF ] && echo "$PRINTF not found" && exit 1
+[ ! -x $EXPR ] && echo "$EXPR not found" && exit 1
+[ ! -x $MKDIR ] && echo "$MKDIR not found" && exit 1
+[ ! -x $CP ] && echo "$CP not found" && exit 1
 
 usage() {
     $PRINTF "usage: $SCRIPT_NAME [-h|-i|-u]\n\n"
@@ -17,7 +24,7 @@ install() {
     local repo_rel_path=""
     local target_path=""
 
-    for i in `find $SCRIPT_DIR/vim*`
+    for i in `find $REPO_BASE/vim*`
     do
         repo_rel_path=`echo $i | sed -n 's|.*/\(vim.*\)|\1|p'`
         target_path=~/.$repo_rel_path
@@ -41,7 +48,7 @@ install() {
             $PRINTF "%*s\n" $result_indent "[COPY]"
         elif [ -f $i -a -f $target_path ]
         then
-            if diff -u $target_path $i > /dev/null 2>&1
+            if $DIFF -u $target_path $i > /dev/null 2>&1
             then
                 $PRINTF "%*s\n" $result_indent "[SKIP]"
                 continue
@@ -54,7 +61,7 @@ install() {
                 case $tmp in
                     d)
                         $PRINTF "\n"
-                        diff -u $target_path $i
+                        $DIFF -u $target_path $i
                         ;;
                     o)
                         $PRINTF "repo::%s -> %s" "$repo_rel_path" "$target_path"
