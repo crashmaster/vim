@@ -12,6 +12,7 @@ RM=/bin/rm
 DIFF=/usr/bin/diff
 LS=/bin/ls
 WC=/usr/bin/wc
+SORT=/usr/bin/sort
 
 # Check used tools for their availability
 [ ! -x $PRINTF ] && echo "$PRINTF not found" && exit 1
@@ -138,7 +139,7 @@ uninstall() {
     done
 
     # directories
-    for i in `find $REPO_BASE/vim*`
+    for i in `find $REPO_BASE/vim* | $SORT -r`
     do
         [ ! -d $i ] && continue
         repo_path=`echo $i | sed -n 's|.*/\(vim.*\)|\1|p'`
