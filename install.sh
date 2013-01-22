@@ -69,15 +69,18 @@ install() {
         if [ -d $i -a ! -d $target_path ]
         then
             exec_command $result_indent "[MKDIR]" $MKDIR -p $target_path
+            continue
         elif [ -d $i -a -d $target_path ]
         then
             print_result $result_indent "[EXISTS]"
+            continue
         fi
 
         # files
         if [ -f $i -a ! -f $target_path ]
         then
             exec_command $result_indent "[COPY]" $CP $i $target_path
+            continue
         elif [ -f $i -a -f $target_path ]
         then
             if $DIFF -u $target_path $i > /dev/null 2>&1
@@ -119,7 +122,6 @@ install() {
 
 uninstall() {
     local result_indent=0
-    local repo_path=""
     local target_path=""
 
     while true
@@ -144,8 +146,7 @@ uninstall() {
     for i in `$FIND $REPO_BASE/vim*`
     do
         [ ! -f $i ] && continue
-        repo_path=`echo $i | sed -n 's|.*/\(vim.*\)|\1|p'`
-        target_path=~/.$repo_path
+        target_path=~/.`echo $i | sed -n 's|.*/\(vim.*\)|\1|p'`
         [ ! -f $target_path ] && continue
         result_indent=`$EXPR 72 - ${#target_path}`
         $PRINTF "  -> %s" "$target_path"
@@ -156,8 +157,7 @@ uninstall() {
     for i in `$FIND $REPO_BASE/vim* | $SORT -r`
     do
         [ ! -d $i ] && continue
-        repo_path=`echo $i | sed -n 's|.*/\(vim.*\)|\1|p'`
-        target_path=~/.$repo_path
+        target_path=~/.`echo $i | sed -n 's|.*/\(vim.*\)|\1|p'`
         [ ! -d $target_path ] && continue
         result_indent=`$EXPR 72 - ${#target_path}`
         $PRINTF "  -> %s" "$target_path"
