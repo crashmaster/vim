@@ -3,39 +3,56 @@
 SCRIPT_NAME=`basename $0`
 REPO_BASE=`dirname $0`
 
-PRINTF=/usr/bin/printf
-EXPR=/usr/bin/expr
-MKDIR=/bin/mkdir
-RMDIR=/bin/rmdir
-CP=/bin/cp
-RM=/bin/rm
-DIFF=/usr/bin/diff
-LS=/bin/ls
-FIND=/usr/bin/find
-WC=/usr/bin/wc
-SORT=/usr/bin/sort
+PRINTF="printf"
+EXPR="expr"
+MKDIR="mkdir"
+RMDIR="rmdir"
+CP="cp"
+RM="rm"
+DIFF="diff"
+LS="ls"
+FIND="find"
+WC="wc"
+SORT="sort"
 
-# Check used tools for their availability
-[ ! -x $PRINTF ] && echo "$PRINTF not found" && exit 1
-[ ! -x $EXPR ] && echo "$EXPR not found" && exit 1
-[ ! -x $MKDIR ] && echo "$MKDIR not found" && exit 1
-[ ! -x $RMDIR ] && echo "$RMDIR not found" && exit 1
-[ ! -x $CP ] && echo "$CP not found" && exit 1
-[ ! -x $RM ] && echo "$RM not found" && exit 1
-[ ! -x $DIFF ] && echo "$DIFF not found" && exit 1
-[ ! -x $LS ] && echo "$LS not found" && exit 1
-[ ! -x $FIND ] && echo "$FIND not found" && exit 1
-[ ! -x $WC ] && echo "$WC not found" && exit 1
-[ ! -x $SORT ] && echo "$SORT not found" && exit 1
+check_used_tools() {
+    # Check used tools for availability
+    set $PRINTF $EXPR $MKDIR $RMDIR $CP $RM $DIFF $LS $FIND $WC $SORT
+
+    which which > /dev/null 2>&1 || exit 1
+    for i in $@
+    do
+        which $i > /dev/null 2>&1 || exit 1
+    done
+}
 
 usage() {
     $PRINTF "usage: $SCRIPT_NAME [-h|-i|-u]\n\n"
-    $PRINTF "Installs the Crashmaster Vim Configuration o_O\n"
+    $PRINTF "installs/uninstalls the Crashmaster Vim configuration\n"
+}
+
+print_result() {
+    $PRINTF "%*s\n" "$1" "$2"
 }
 
 error_result() {
-    $PRINTF "%*s\n" $1 "[ERROR]"
+    print_result $1 "[ERROR]"
+    $PRINTF "%s\n" "$2"
     exit 1
+}
+
+exec_command() {
+    local result_indent=0
+    local result_str=""
+    local cmd_output=""
+
+    result_indent=$1
+    shift
+    result_str=$1
+    shift
+
+    cmd_output=`$@ 2>&1` || error_result $result_indent "$cmd_output"
+    print_result $result_indent "$result_str"
 }
 
 install() {
@@ -51,23 +68,21 @@ install() {
         # directories
         if [ -d $i -a ! -d $target_path ]
         then
-            $MKDIR -p $target_path || error_result $result_indent
-            $PRINTF "%*s\n" $result_indent "[MKDIR]"
+            exec_command $result_indent "[MKDIR]" $MKDIR -p $target_path
         elif [ -d $i -a -d $target_path ]
         then
-            $PRINTF "%*s\n" $result_indent "[EXISTS]"
+            print_result $result_indent "[EXISTS]"
         fi
 
         # files
         if [ -f $i -a ! -f $target_path ]
         then
-            $CP $i $target_path || error_result $result_indent
-            $PRINTF "%*s\n" $result_indent "[COPY]"
+            exec_command $result_indent "[COPY]" $CP $i $target_path
         elif [ -f $i -a -f $target_path ]
         then
             if $DIFF -u $target_path $i > /dev/null 2>&1
             then
-                $PRINTF "%*s\n" $result_indent "[SAME]"
+                print_result $result_indent "[SAME]"
                 continue
             fi
             while true
@@ -82,13 +97,12 @@ install() {
                         ;;
                     o)
                         $PRINTF "  -> %s" "$target_path"
-                        $CP $i $target_path || error_result $result_indent
-                        $PRINTF "%*s\n" $result_indent "[COPY]"
+                        exec_command $result_indent "[COPY]" $CP $i $target_path
                         break
                         ;;
                     s)
                         $PRINTF "  -> %s" "$target_path"
-                        $PRINTF "%*s\n" $result_indent "[SKIP]"
+                        print_result $result_indent "[SKIP]"
                         break
                         ;;
                     q)
@@ -132,13 +146,10 @@ uninstall() {
         [ ! -f $i ] && continue
         repo_path=`echo $i | sed -n 's|.*/\(vim.*\)|\1|p'`
         target_path=~/.$repo_path
+        [ ! -f $target_path ] && continue
         result_indent=`$EXPR 72 - ${#target_path}`
-        if [ -f $target_path ]
-        then
-            $PRINTF "  -> %s" "$target_path"
-            $RM $target_path || error_result $result_indent
-            $PRINTF "%*s\n" $result_indent "[RM]"
-        fi
+        $PRINTF "  -> %s" "$target_path"
+        exec_command $result_indent "[RM]" $RM $target_path
     done
 
     # directories
@@ -147,32 +158,44 @@ uninstall() {
         [ ! -d $i ] && continue
         repo_path=`echo $i | sed -n 's|.*/\(vim.*\)|\1|p'`
         target_path=~/.$repo_path
+        [ ! -d $target_path ] && continue
         result_indent=`$EXPR 72 - ${#target_path}`
         $PRINTF "  -> %s" "$target_path"
         if [ `$LS -a $target_path | $WC -l` -lt 3 ]
         then
-            $RMDIR $target_path || error_result $result_indent
-            $PRINTF "%*s\n" $result_indent "[RMDIR]"
+            exec_command $result_indent "[RMDIR]" $RMDIR $target_path
         else
-            $PRINTF "%*s\n" $result_indent "[NOT EMPTY]"
+            print_result $result_indent "[NOT EMPTY]"
         fi
     done
 }
 
-case "$@" in
-    -h|--help)
-        usage
-        ;;
-    -i|--install)
-        install
-        ;;
-    -u|--uninstall)
-        uninstall
-        ;;
-    *)
-        $PRINTF "%s: incorrect option\n" $@
+main() {
+    check_used_tools
+
+    if [ 0 -eq $# ]
+    then
+        $PRINTF "$SCRIPT_NAME: insufficient options\n"
         usage
         exit 1
-        ;;
-esac
+    fi
 
+    case "$@" in
+        -h|--help)
+            usage
+            ;;
+        -i|--install)
+            install
+            ;;
+        -u|--uninstall)
+            uninstall
+            ;;
+        *)
+            $PRINTF "%s: incorrect option\n" $@
+            usage
+            exit 1
+            ;;
+    esac
+}
+
+main $@
