@@ -93,9 +93,8 @@ install() {
             fi
             while true
             do
-                ${PRINTF} "\n"
-                read -p "(d)iff, (o)verwrite, (s)kip or (q)uit? " tmp
-                ${PRINTF} "\n"
+                ${PRINTF} "\n(d)iff, (o)verwrite, (s)kip or (q)uit? "
+                read tmp
                 case ${tmp} in
                     d)
                         ${PRINTF} "\n"
@@ -130,18 +129,17 @@ uninstall() {
 
     while true
     do
-        read -p "Really (u)ninstall or (q)uit? " tmp
+        ${PRINTF} "Really (u)ninstall or (q)uit? "
+        read tmp
         case ${tmp} in
             u)
-                ${PRINTF} "\n"
                 break
                 ;;
             q)
-                ${PRINTF} "\n"
                 exit 0
                 ;;
             *)
-                ${PRINTF} "\n  %s: incorrect choice\n" ${tmp}
+                ${PRINTF} "  %s: incorrect choice\n" ${tmp}
                 ;;
         esac
     done
