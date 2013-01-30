@@ -50,7 +50,3 @@ endif
 set list
 set listchars=trail:-
 
-if exists("*SourceSiteConfig")
-    call SourceSiteConfig(escape(expand('<sfile>:p'), '\'))
-endif
-

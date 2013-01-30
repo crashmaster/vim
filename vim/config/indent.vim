@@ -6,7 +6,3 @@ set tabstop=4           " Number of spaces that a tab in the file counts for
 set softtabstop=4
 set nostartofline       " Cursor is kept in the same column
 
-if exists("*SourceSiteConfig")
-    call SourceSiteConfig(escape(expand('<sfile>:p'), '\'))
-endif
-

@@ -18,7 +18,3 @@ set hidden              " Do not unload buffer, when abandoned
 
 set diffopt=context:777 " Show lots of context in diff mode
 
-if exists("*SourceSiteConfig")
-    call SourceSiteConfig(escape(expand('<sfile>:p'), '\'))
-endif
-
