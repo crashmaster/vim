@@ -8,4 +8,7 @@ endfor
 " Loop through the vimrc config files and source them
 for config_file in split(globpath("$HOME/.vim/config", '*'), '\n')
     execute "source " . config_file
+    if exists("*SourceSiteConfig")
+        call SourceSiteConfig(config_file)
+    endif
 endfor
