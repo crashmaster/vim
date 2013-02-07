@@ -14,7 +14,11 @@ filetype indent on      " Enabled loading of indent files
 
 set noswapfile          " No swap file, what could go wrong? :)
 set nobackup            " No backup
+set writebackup         " Do not make a backup before overwriting a file
 set hidden              " Do not unload buffer, when abandoned
 
+set ffs=unix,dos,mac    " end-of-line formats that will be tried
+
 set diffopt=context:777 " Show lots of context in diff mode
+set diffopt+=iwhite     " Ignore white space charactes in diff
 
