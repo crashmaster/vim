@@ -15,6 +15,8 @@ FIND="find"
 WC="wc"
 SORT="sort"
 
+PRETEND_MODE=0
+
 check_used_tools() {
     # Check used tools for availability
     set ${PRINTF} ${EXPR} ${MKDIR} ${RMDIR} ${CP} ${RM} ${DIFF} ${LS} \
@@ -28,16 +30,16 @@ check_used_tools() {
 }
 
 usage() {
-    ${PRINTF} "usage: ${SCRIPT_NAME} [-h|-i|-u]\n\n"
+    ${PRINTF} "usage: ${SCRIPT_NAME} [-p] -h|-i|-u\n\n"
     ${PRINTF} "installs/uninstalls the Crashmaster Vim configuration\n"
 }
 
 print_result() {
-    ${PRINTF} "%*s\n" "${1}" "${2}"
+    ${PRINTF} "%*s\n" "${1}" "[${2}]"
 }
 
 error_result() {
-    print_result ${1} "[ERROR]"
+    print_result ${1} "ERROR"
     ${PRINTF} "%s\n" "${2}"
     exit 1
 }
@@ -52,8 +54,13 @@ exec_command() {
     result_str=${1}
     shift
 
-    cmd_output=`$@ 2>&1` || error_result ${result_indent} "${cmd_output}"
-    print_result ${result_indent} "${result_str}"
+    if [ 0 -eq $PRETEND_MODE ]
+    then
+        cmd_output=`$@ 2>&1` || error_result ${result_indent} "${cmd_output}"
+        print_result ${result_indent} "${result_str}"
+    else
+        print_result ${result_indent} "PRETEND ${result_str}"
+    fi
 }
 
 install() {
@@ -69,26 +76,26 @@ install() {
         # directories
         if [ -d ${i} -a ! -d ${target_path} ]
         then
-            exec_command ${result_indent} "[MKDIR]" \
+            exec_command ${result_indent} "MKDIR" \
                          ${MKDIR} -p ${target_path}
             continue
         elif [ -d ${i} -a -d ${target_path} ]
         then
-            print_result ${result_indent} "[EXISTS]"
+            print_result ${result_indent} "EXISTS"
             continue
         fi
 
         # files
         if [ -f ${i} -a ! -f ${target_path} ]
         then
-            exec_command ${result_indent} "[COPY]" \
+            exec_command ${result_indent} "COPY" \
                          ${CP} ${i} ${target_path}
             continue
         elif [ -f ${i} -a -f ${target_path} ]
         then
             if ${DIFF} -u ${target_path} ${i} > /dev/null 2>&1
             then
-                print_result ${result_indent} "[SAME]"
+                print_result ${result_indent} "SAME"
                 continue
             fi
             while true
@@ -102,13 +109,13 @@ install() {
                         ;;
                     o)
                         ${PRINTF} "  -> %s" "${target_path}"
-                        exec_command ${result_indent} "[COPY]" \
+                        exec_command ${result_indent} "COPY" \
                                      ${CP} ${i} ${target_path}
                         break
                         ;;
                     s)
                         ${PRINTF} "  -> %s" "${target_path}"
-                        print_result ${result_indent} "[SKIP]"
+                        print_result ${result_indent} "SKIP"
                         break
                         ;;
                     q)
@@ -152,7 +159,7 @@ uninstall() {
         [ ! -f ${target_path} ] && continue
         result_indent=`${EXPR} 72 - ${#target_path}`
         ${PRINTF} "  -> %s" "${target_path}"
-        exec_command ${result_indent} "[RM]" \
+        exec_command ${result_indent} "RM" \
                      ${RM} ${target_path}
     done
 
@@ -166,16 +173,22 @@ uninstall() {
         ${PRINTF} "  -> %s" "${target_path}"
         if [ `${LS} -a ${target_path} | ${WC} -l` -lt 3 ]
         then
-            exec_command ${result_indent} "[RMDIR]" \
+            exec_command ${result_indent} "RMDIR" \
                          ${RMDIR} ${target_path}
         else
-            print_result ${result_indent} "[NOT EMPTY]"
+            print_result ${result_indent} "NOT EMPTY"
         fi
     done
 }
 
 main() {
     check_used_tools
+
+    if [ "-p" = "$1" -o "--pretend" = "$1" ]
+    then
+        PRETEND_MODE=1
+        shift
+    fi
 
     if [ 0 -eq $# ]
     then
