@@ -1,4 +1,4 @@
-" This config file contains settings related to TAB, indent
+" This config file contains settings related to TAB-usage, indenting.
 
 set expandtab           " Insert spaces instead of tabs
 set shiftwidth=4        " Number of spaces used for each step of indent

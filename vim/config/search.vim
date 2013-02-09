@@ -1,4 +1,4 @@
-" This config file contains settings related to searching
+" This config file contains settings related to searching.
 
 set magic               " Changes the special characters in search patterns
 

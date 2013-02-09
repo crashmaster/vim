@@ -1,6 +1,6 @@
-" This config file contains settings related to the abbreviations
+" This config file contains settings related to the abbreviations.
 
-" Some useful insert mode only abbreviations
+" Some useful insert mode only abbreviations:
 iabbrev teh the
 iabbrev Teh The
 iabbrev wheter whether

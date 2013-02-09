@@ -1,4 +1,4 @@
-" This config file contains settings related to the editor's look
+" This config file contains settings related to the editor's look.
 
 syntax on               " Syntax highlighting, Vim overrules settings
 
