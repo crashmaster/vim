@@ -37,6 +37,8 @@ let g:clang_complete_copen = 1
 let g:clang_hl_errors = 0
 let g:clang_periodic_quickfix = 1
 
+set updatetime=1700             " QF should be updated every 1,7 sec
+
 if exists("*SourceSiteConfig")
     call SourceSiteConfig(escape(expand('<sfile>:p'), '\'))
 endif
