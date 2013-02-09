@@ -1,4 +1,4 @@
-#!env sh
+#!/bin/sh
 
 SCRIPT_NAME=`basename ${0}`
 REPO_BASE=`dirname ${0}`
