@@ -14,7 +14,7 @@ set writebackup         " Do not make a backup before overwriting a file
 " The other way would be using the hidden option, but that has some drawbacks.
 " NOTE: undo files are never deleted by Vim. You need to delete them yourself.
 if has("persistent_undo")
-    set undodir=~/.vim/undofiles/
+    let g:pers_opts = {"undodir": "~/.vim/undofiles/"}
     set undofile
     set autowriteall
 else
