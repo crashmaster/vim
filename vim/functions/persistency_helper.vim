@@ -1,4 +1,8 @@
 function! UpdatePersistencyOptionsForCCView()
+    if !exists("g:pers_opts") || empty(g:pers_opts)
+        return
+    endif
+
     let l:abs_path = escape(expand('%:p'), '\')
 
     if IsEnvVarSet($CLEARCASE_ROOT) && l:abs_path =~ $CLEARCASE_ROOT
