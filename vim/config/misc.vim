@@ -14,4 +14,5 @@ set ffs=unix,dos,mac    " end-of-line formats that will be tried
 
 set diffopt=context:777 " Show lots of context in diff mode
 set diffopt+=iwhite     " Ignore white space charactes in diff
+highlight DiffChange ctermbg=black ctermfg=white
 

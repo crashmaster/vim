@@ -9,3 +9,4 @@ endfor
 for config_file in split(globpath("$HOME/.vim/config", "*"), "\n")
     execute "source " . config_file
 endfor
+

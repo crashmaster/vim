@@ -31,14 +31,15 @@ let g:SuperTabDefaultCompletionType = "context"
 
 " Some clang complete options:
 let g:clang_complete_auto = 0
-let g:clang_library_path = ""   " The g:clang_library_path is site specific
+let g:clang_library_path = ""       " g:clang_library_path is site specific
 let g:clang_use_library = 1
 let g:clang_complete_copen = 1
 let g:clang_hl_errors = 0
-let g:clang_periodic_quickfix = 1
+let g:clang_periodic_quickfix = 0   " Do not update QF periodically
 let g:clang_user_options = "-Wall"
 
-set updatetime=1700             " QF should be updated every 1,7 sec
+" Toggle QF update
+nnoremap <silent> <F8> :call g:ClangUpdateQuickFix()<CR>
 
 if exists("*SourceSiteConfig")
     call SourceSiteConfig(escape(expand('<sfile>:p'), '\'))
