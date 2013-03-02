@@ -24,6 +24,8 @@ if version >= 703
   set colorcolumn=+0    " Column highlighted, relative to textwidth
 endif
 
+set background=dark
+
 " TODO try/catch for setting color scheme
 " Make sure, you have inkpot color scheme installed and your terminal
 " should support 256 colors
