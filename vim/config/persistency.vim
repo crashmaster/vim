@@ -17,7 +17,7 @@ if has("persistent_undo")
     set undodir=~/.vim/undofiles
     set undofile
     set autowriteall
-else
-    set hidden          " Do not unload buffer, when abandoned
 endif
+
+set hidden              " Do not unload buffer, when abandoned
 

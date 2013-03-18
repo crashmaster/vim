@@ -11,21 +11,6 @@ if version >= 703
   set colorcolumn=+1
 endif
 
-" Some shortcuts:
-" In these shortcuts the space added by the abbreviation mechanism is
-" useful, so there is no need to eat it up
-iabbrev forui for (unsigned int i(0); i <; ++i)<CR>{<CR>}<ESC>2k02f;i
-iabbrev fori for (int i(0); i <; ++i)<CR>{<CR>}<ESC>2k02f;i
-iabbrev sout std::cout << << std::endl;<ESC>2F i
-iabbrev serr std::cerr << << std::endl;<ESC>2F i
-iabbrev slog std::clog << << std::endl;<ESC>2F i
-iabbrev class class<CR>{<CR>};<ESC>2kA
-iabbrev struct struct<CR>{<CR>};<ESC>2kA
-iabbrev comm /**<CR><CR>/<UP>
-" <c-o> temporary normal mode for 1 command in the insert mode :-)
-" This trick is used for eating up the superfluous space.
-iabbrev incl #include <%><ESC>F%s<c-o>:call getchar()<CR>
-
 " Open the completion pop up with <TAB>
 let g:SuperTabDefaultCompletionType = "context"
 
@@ -34,9 +19,12 @@ let g:clang_complete_auto = 0
 let g:clang_library_path = ""       " g:clang_library_path is site specific
 let g:clang_use_library = 1
 let g:clang_complete_copen = 1
-let g:clang_hl_errors = 0
-let g:clang_periodic_quickfix = 0   " Do not update QF periodically
+let g:clang_hl_errors = 1
+let g:clang_periodic_quickfix = 1   " Do not update QF periodically
 let g:clang_user_options = "-Wall"
+let g:clang_snippets = 0
+
+set updatetime=1700
 
 " Toggle QF update
 nnoremap <silent> <F8> :call g:ClangUpdateQuickFix()<CR>

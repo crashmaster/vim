@@ -24,17 +24,18 @@ if version >= 703
   set colorcolumn=+0    " Column highlighted, relative to textwidth
 endif
 
-set background=dark
-
 " TODO try/catch for setting color scheme
-" Make sure, you have inkpot color scheme installed and your terminal
-" should support 256 colors
 if has("gui_running")
   colorscheme inkpot
 else
-  set t_Co=256
-  let g:inkpot_black_background = 1
-  colorscheme inkpot
+  if &t_Co == "256"
+    " let g:solarized_termcolors=256
+    " colorscheme solarized
+    let g:inkpot_black_background = 1
+    colorscheme inkpot
+  else
+    colorscheme koehler
+  endif
 endif
 
 set laststatus=2
