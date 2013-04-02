@@ -3,7 +3,7 @@ setlocal tabstop=2           " TAB counts for 2 spaces in the file
 setlocal softtabstop=2
 setlocal autoindent          " Copy indent from current line when starting a new one
 setlocal cindent             " Enables automatic C program indenting
-setlocal cinoptions=b1,(0    " Some fine-tuning for cindent
+setlocal cinoptions=(0       " Some fine-tuning for cindent
 
 if version >= 703
   set textwidth=99
