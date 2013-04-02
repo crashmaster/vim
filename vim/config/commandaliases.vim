@@ -6,6 +6,8 @@ command! -nargs=0 WQa wqa
 command! -nargs=0 Wqa wqa
 command! -nargs=0 WQ wq
 command! -nargs=0 Wq wq
+command! -nargs=0 WA wa
+command! -nargs=0 Wa wa
 command! -nargs=0 W w
 
 " Handle buffer-change related typos
