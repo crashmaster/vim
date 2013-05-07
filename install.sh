@@ -74,24 +74,24 @@ install() {
         ${PRINTF} "  -> %s" "${target_path}"
 
         # directories
-        if [ -d ${i} -a ! -d ${target_path} ]
+        if [ -d ${i} ] && [ ! -d ${target_path} ]
         then
             exec_command ${result_indent} "MKDIR" \
                          ${MKDIR} -p ${target_path}
             continue
-        elif [ -d ${i} -a -d ${target_path} ]
+        elif [ -d ${i} ] && [ -d ${target_path} ]
         then
             print_result ${result_indent} "EXISTS"
             continue
         fi
 
         # files
-        if [ -f ${i} -a ! -f ${target_path} ]
+        if [ -f ${i} ] && [ ! -f ${target_path} ]
         then
             exec_command ${result_indent} "COPY" \
                          ${CP} ${i} ${target_path}
             continue
-        elif [ -f ${i} -a -f ${target_path} ]
+        elif [ -f ${i} ] && [ -f ${target_path} ]
         then
             if ${DIFF} -u ${target_path} ${i} > /dev/null 2>&1
             then
@@ -184,7 +184,7 @@ uninstall() {
 main() {
     check_used_tools
 
-    if [ "-p" = "$1" -o "--pretend" = "$1" ]
+    if [ "-p" = "$1" ] || [ "--pretend" = "$1" ]
     then
         PRETEND_MODE=1
         shift

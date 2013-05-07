@@ -41,12 +41,11 @@ endif
 set laststatus=2
 set statusline=%<%F%h%m%r%h%w%y\ %{&ff}%=line:%l/%L\ col:%c%V\ ascii:%b\ %P
 
-" Set status line's color to fg: white and bg: none,
-" independent from the current color scheme
-hi StatusLine ctermfg=white ctermbg=none
+hi ColorColumn term=reverse ctermfg=244 ctermbg=235 gui=reverse
+hi StatusLine term=reverse ctermfg=244 ctermbg=235 gui=reverse
 if version >= 700
-  au InsertEnter * hi StatusLine ctermbg=1
-  au InsertLeave * hi StatusLine ctermfg=white ctermbg=none
+  au InsertEnter * hi StatusLine term=reverse ctermfg=231 ctermbg=1
+  au InsertLeave * hi StatusLine term=reverse ctermfg=244 ctermbg=235
 endif
 
 " Show TAB-s and superfluous SPACE characters
