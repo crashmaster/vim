@@ -11,24 +11,6 @@ if version >= 703
   set colorcolumn=+1
 endif
 
-" Open the completion pop up with <TAB>
-let g:SuperTabDefaultCompletionType = "context"
-
-" Some clang complete options:
-let g:clang_complete_auto = 0
-let g:clang_library_path = ""       " g:clang_library_path is site specific
-let g:clang_use_library = 1
-let g:clang_complete_copen = 1
-let g:clang_hl_errors = 1
-let g:clang_periodic_quickfix = 1   " Do not update QF periodically
-let g:clang_user_options = "-Wall"
-let g:clang_snippets = 0
-
-set updatetime=1700
-
-" Toggle QF update
-nnoremap <silent> <F8> :call g:ClangUpdateQuickFix()<CR>
-
 if exists("*SourceSiteConfig")
     call SourceSiteConfig(escape(expand('<sfile>:p'), '\'))
 endif
