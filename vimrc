@@ -5,12 +5,17 @@ for function_file in split(globpath("$HOME/.vim/functions", "*"), "\n")
     execute "source " . function_file
 endfor
 
-func Cmp(i1, i2)
-    return a:i1 == a:i2 ? 0 : a:i1 > a:i2 ? -1 : 1
-endfunc
-
-" Loop through the vimrc config files and source them
-for config_file in sort(split(globpath("$HOME/.vim/config", "*"), "\n"), "Cmp")
-    execute "source " . config_file
+let s:non_site_config_files = []
+for i in sort(split(globpath("$HOME/.vim/config", "*.vim"), "\n"))
+    if i !~? "\.site"
+        call add(s:non_site_config_files, i)
+    endif
 endfor
 
+for i in s:non_site_config_files
+    execute "source " . i
+    let tmp = strpart(i, 0, match(i, '\.vim$')) . ".site.vim"
+    if filereadable(tmp)
+        execute "source " . tmp
+    endif
+endfor
