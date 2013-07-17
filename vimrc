@@ -5,17 +5,17 @@ for function_file in split(globpath("$HOME/.vim/functions", "*"), "\n")
     execute "source " . function_file
 endfor
 
-let s:non_site_config_files = []
-for i in sort(split(globpath("$HOME/.vim/config", "*.vim"), "\n"))
-    if i !~? "\.site"
-        call add(s:non_site_config_files, i)
+" TODO: use functions (try_to_source_site_vim_of(config)) for better
+" readability
+for config in split(globpath("$HOME/.vim/config", "*.vim"), "\n")
+    if config !~? "\.site"
+        execute "source " . config
+        echo config
+        let site = strpart(config, 0, match(config, '\.vim$')) . ".site.vim"
+        if filereadable(site)
+            execute "source " . site
+            echo site
+        endif
     endif
 endfor
 
-for i in s:non_site_config_files
-    execute "source " . i
-    let tmp = strpart(i, 0, match(i, '\.vim$')) . ".site.vim"
-    if filereadable(tmp)
-        execute "source " . tmp
-    endif
-endfor
