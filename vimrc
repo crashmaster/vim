@@ -10,11 +10,9 @@ endfor
 for config in split(globpath("$HOME/.vim/config", "*.vim"), "\n")
     if config !~? "\.site"
         execute "source " . config
-        echo config
         let site = strpart(config, 0, match(config, '\.vim$')) . ".site.vim"
         if filereadable(site)
             execute "source " . site
-            echo site
         endif
     endif
 endfor
