@@ -12,9 +12,11 @@ if !filereadable($HOME . "/.vim/bundle/YouCompleteMe/plugin/youcompleteme.vim")
 else
     let g:ycm_confirm_extra_conf = 0
     let g:ycm_add_preview_to_completeopt = 0
-    let g:ycm_complete_in_comments = 0
+    let g:ycm_complete_in_comments = 1
+    let g:ycm_complete_in_strings = 1
     let g:ycm_collect_identifiers_from_comments_and_strings = 1
     let g:ycm_filetype_whitelist = { 'c': 1, 'cpp': 1, 'python': 1 }
+    let g:ycm_allow_changing_updatetime = 0
 
     nnoremap <leader>q :YcmCompleter GoToDefinitionElseDeclaration<CR>
     nnoremap <leader>w :YcmCompleter GoToDeclaration<CR>
@@ -35,7 +37,8 @@ else
     let g:syntastic_cpp_checkers=['ycm']
     let g:syntastic_sh_checkers = ['sh', 'checkbashisms']
     let g:syntastic_python_pylama_args = '-l pyflakes,pep8,pep257,mccabe,pylint'
-    let g:syntastic_python_checkers = ['python', 'pylama']
+    let g:syntastic_python_pylama_args = '-l pep8,pyflakes,pep257,mccabe,pylint'
+    let g:syntastic_python_checkers = ['python', 'pyflakes', 'pep8', 'pylama', 'py3kwarn']
     let g:syntastic_java_checkers=[]
     let g:syntastic_check_on_open = 0
     let g:syntastic_enable_signs = 1
