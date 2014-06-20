@@ -37,7 +37,7 @@ else
     let g:syntastic_cpp_checkers=['ycm']
     let g:syntastic_sh_checkers = ['sh', 'checkbashisms']
     let g:syntastic_python_pylama_args = '-l pep257,mccabe,pylint'
-    let g:syntastic_python_checkers = ['python', 'frosted', 'pep8', 'pylama', 'py3kwarn']
+    let g:syntastic_python_checkers = ['python', 'pep8', 'frosted', 'pylama', 'py3kwarn']
     let g:syntastic_java_checkers=[]
     let g:syntastic_check_on_open = 0
     let g:syntastic_enable_signs = 1
