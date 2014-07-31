@@ -1,13 +1,13 @@
 #!/bin/sh
 
-SCRIPT_NAME=`basename ${0}`
-REPO_BASE=`dirname ${0}`
+SCRIPT_NAME=$(basename ${0})
+REPO_BASE=$(dirname $(readlink -e ${0}))
 
 PRINTF="printf"
 EXPR="expr"
 MKDIR="mkdir"
 RMDIR="rmdir"
-CP="cp"
+LN="ln"
 RM="rm"
 DIFF="diff"
 LS="ls"
@@ -19,7 +19,7 @@ PRETEND_MODE=0
 
 check_used_tools() {
     # Check used tools for availability
-    set ${PRINTF} ${EXPR} ${MKDIR} ${RMDIR} ${CP} ${RM} ${DIFF} ${LS} \
+    set ${PRINTF} ${EXPR} ${MKDIR} ${RMDIR} ${LN} ${RM} ${DIFF} ${LS} \
         ${FIND} ${WC} ${SORT}
 
     which which > /dev/null 2>&1 || exit 1
@@ -44,58 +44,56 @@ error_result() {
     exit 1
 }
 
-exec_command() {
-    local result_indent=0
+execute() {
+    local indent=0
     local result_str=""
     local cmd_output=""
 
-    result_indent=${1}
+    indent=${1}
     shift
     result_str=${1}
     shift
 
     if [ 0 -eq $PRETEND_MODE ]
     then
-        cmd_output=`$@ 2>&1` || error_result ${result_indent} "${cmd_output}"
-        print_result ${result_indent} "${result_str}"
+        cmd_output=$($@ 2>&1) || error_result ${indent} "${cmd_output}"
+        print_result ${indent} "${result_str}"
     else
-        print_result ${result_indent} "PRETEND ${result_str}"
+        print_result ${indent} "PRETEND ${result_str}"
     fi
 }
 
 install() {
-    local result_indent=0
-    local target_path=""
+    local indent=0
+    local target=""
 
-    for i in `${FIND} ${REPO_BASE}/vim*`
+    for source in $(${FIND} ${REPO_BASE}/vim*)
     do
-        target_path=~/.`echo ${i} | sed -n 's|.*/\(vim.*\)|\1|p'`
-        result_indent=`${EXPR} 72 - ${#target_path}`
-        ${PRINTF} "  -> %s" "${target_path}"
+        target=~/.$(echo ${source} | sed -n 's|.*/\(vim.*\)|\1|p')
+        indent=$(${EXPR} 72 - ${#target})
+        ${PRINTF} "  -> %s" "${target}"
 
         # directories
-        if [ -d ${i} ] && [ ! -d ${target_path} ]
+        if [ -d ${source} ] && [ ! -d ${target} ]
         then
-            exec_command ${result_indent} "MKDIR" \
-                         ${MKDIR} -p ${target_path}
+            execute ${indent} "MKDIR" ${MKDIR} -p ${target}
             continue
-        elif [ -d ${i} ] && [ -d ${target_path} ]
+        elif [ -d ${source} ] && [ -d ${target} ]
         then
-            print_result ${result_indent} "EXISTS"
+            print_result ${indent} "EXISTS"
             continue
         fi
 
         # files
-        if [ -f ${i} ] && [ ! -f ${target_path} ]
+        if [ -f ${source} ] && [ ! -f ${target} ]
         then
-            exec_command ${result_indent} "COPY" \
-                         ${CP} ${i} ${target_path}
+            execute ${indent} "LINK" ${LN} -fs ${source} ${target}
             continue
-        elif [ -f ${i} ] && [ -f ${target_path} ]
+        elif [ -f ${source} ] && [ -f ${target} ]
         then
-            if ${DIFF} -u ${target_path} ${i} > /dev/null 2>&1
+            if ${DIFF} -u ${target} ${source} > /dev/null 2>&1
             then
-                print_result ${result_indent} "SAME"
+                print_result ${indent} "SAME"
                 continue
             fi
             while true
@@ -105,17 +103,16 @@ install() {
                 case ${tmp} in
                     d)
                         ${PRINTF} "\n"
-                        ${DIFF} -u ${target_path} ${i}
+                        ${DIFF} -u ${target} ${source}
                         ;;
                     o)
-                        ${PRINTF} "  -> %s" "${target_path}"
-                        exec_command ${result_indent} "COPY" \
-                                     ${CP} ${i} ${target_path}
+                        ${PRINTF} "  -> %s" "${target}"
+                        execute ${indent} "LINK" ${LN} -fs ${source} ${target}
                         break
                         ;;
                     s)
-                        ${PRINTF} "  -> %s" "${target_path}"
-                        print_result ${result_indent} "SKIP"
+                        ${PRINTF} "  -> %s" "${target}"
+                        print_result ${indent} "SKIP"
                         break
                         ;;
                     q)
@@ -131,8 +128,8 @@ install() {
 }
 
 uninstall() {
-    local result_indent=0
-    local target_path=""
+    local indent=0
+    local target=""
 
     while true
     do
@@ -152,31 +149,29 @@ uninstall() {
     done
 
     # files
-    for i in `${FIND} ${REPO_BASE}/vim*`
+    for i in $(${FIND} ${REPO_BASE}/vim*)
     do
         [ ! -f ${i} ] && continue
-        target_path=~/.`echo ${i} | sed -n 's|.*/\(vim.*\)|\1|p'`
-        [ ! -f ${target_path} ] && continue
-        result_indent=`${EXPR} 72 - ${#target_path}`
-        ${PRINTF} "  -> %s" "${target_path}"
-        exec_command ${result_indent} "RM" \
-                     ${RM} ${target_path}
+        target=~/.$(echo ${i} | sed -n 's|.*/\(vim.*\)|\1|p')
+        [ ! -f ${target} ] && continue
+        indent=$(${EXPR} 72 - ${#target})
+        ${PRINTF} "  -> %s" "${target}"
+        execute ${indent} "RM" ${RM} ${target}
     done
 
     # directories
-    for i in `${FIND} ${REPO_BASE}/vim* | ${SORT} -r`
+    for i in $(${FIND} ${REPO_BASE}/vim* | ${SORT} -r)
     do
         [ ! -d ${i} ] && continue
-        target_path=~/.`echo ${i} | sed -n 's|.*/\(vim.*\)|\1|p'`
-        [ ! -d ${target_path} ] && continue
-        result_indent=`${EXPR} 72 - ${#target_path}`
-        ${PRINTF} "  -> %s" "${target_path}"
-        if [ `${LS} -a ${target_path} | ${WC} -l` -lt 3 ]
+        target=~/.$(echo ${i} | sed -n 's|.*/\(vim.*\)|\1|p')
+        [ ! -d ${target} ] && continue
+        indent=$(${EXPR} 72 - ${#target})
+        ${PRINTF} "  -> %s" "${target}"
+        if [ $(${LS} -a ${target} | ${WC} -l) -lt 3 ]
         then
-            exec_command ${result_indent} "RMDIR" \
-                         ${RMDIR} ${target_path}
+            execute ${indent} "RMDIR" ${RMDIR} ${target}
         else
-            print_result ${result_indent} "NOT EMPTY"
+            print_result ${indent} "NOT EMPTY"
         fi
     done
 }
