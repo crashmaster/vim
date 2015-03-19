@@ -17,3 +17,5 @@ set diffopt+=iwhite     " Ignore white space charactes in diff
 highlight DiffChange ctermbg=black ctermfg=white
 
 set updatetime=500
+
+set foldmethod=marker
