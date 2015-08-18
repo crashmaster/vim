@@ -4,7 +4,7 @@ setlocal softtabstop=4
 setlocal smarttab
 
 if version >= 703
-  set textwidth=79
+  set textwidth=99
   set formatoptions-=t
   set colorcolumn=+1
 endif
