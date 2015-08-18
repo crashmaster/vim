@@ -33,8 +33,6 @@ else
     let g:syntastic_warning_symbol = 'W▸'
     let g:syntastic_style_error_symbol = 'e▸'
     let g:syntastic_style_warning_symbol = 'w▸'
-    let g:syntastic_c_checkers=['ycm']
-    let g:syntastic_cpp_checkers=['ycm']
     let g:syntastic_sh_checkers = ['sh', 'checkbashisms']
     let g:syntastic_python_pylama_args = '-l mccabe,pylint'
     let g:syntastic_python_checkers = ['python', 'frosted', 'pep8', 'pylama', 'py3kwarn']
