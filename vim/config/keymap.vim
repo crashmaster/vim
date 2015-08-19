@@ -4,7 +4,7 @@
 nnoremap <leader><leader> :b#<CR>
 
 " Search for the text under to cursos till the end of line
-nnoremap <silent><leader>z :set hls \| :let @/=strpart(getline("."), col("."))<CR>
+nnoremap <silent><leader>z :set hls \| :let @/=strpart(getline("."), col(".")-1)<CR>
 
 " Reselect visual block after indent/outdent
 vnoremap < <gv
