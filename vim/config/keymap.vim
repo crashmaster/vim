@@ -4,7 +4,10 @@
 nnoremap <leader><leader> :b#<CR>
 
 " Search for the text under to cursos till the end of line
-nnoremap <silent><leader>z :set hls \| :let @/=strpart(getline("."), col(".")-1)<CR>
+nnoremap <silent><leader>z :SelectRobotKeyword<CR>
+
+" Toggel spell checker
+nnoremap <silent><leader>a :set spell!<CR>
 
 " Reselect visual block after indent/outdent
 vnoremap < <gv
