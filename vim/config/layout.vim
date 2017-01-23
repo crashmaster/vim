@@ -4,6 +4,7 @@ syntax on               " Syntax highlighting, Vim overrules settings
 
 set number              " Show line numbers
 set numberwidth=6       " Line numbers 6 charaters wide
+set relativenumber      " Show line numbers relative to the cursor
 
 set showcmd             " Show (partial) command in the last line of the screen
 set nowrap              " Do not break long lines
