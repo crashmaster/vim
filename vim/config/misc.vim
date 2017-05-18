@@ -20,4 +20,4 @@ set updatetime=500
 
 set foldmethod=marker
 
-set scrolloff=10        " Show last 10 lines always while scrolling
+set scrolloff=5         " Show last 5 lines always while scrolling
