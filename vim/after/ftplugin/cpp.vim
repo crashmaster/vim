@@ -6,7 +6,7 @@ setlocal cindent             " Enables automatic C program indenting
 setlocal cinoptions=(0       " Some fine-tuning for cindent
 
 if version >= 703
-  set textwidth=99
+  set textwidth=79
   set formatoptions-=t
   set colorcolumn=+1
 endif
