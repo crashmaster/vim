@@ -1,6 +1,7 @@
 " This config file contains settings related to the editor's look.
 
 syntax on               " Syntax highlighting, Vim overrules settings
+autocmd BufEnter * :syntax sync fromstart
 
 set number              " Show line numbers
 set numberwidth=6       " Line numbers 6 charaters wide
@@ -54,7 +55,7 @@ set list
 set listchars=trail:-
 
 " Automatically fitting a quickfix window height
-au FileType qf call AdjustWindowHeight(3, 10)
+au FileType qf call AdjustWindowHeight(3, 5)
 function! AdjustWindowHeight(minheight, maxheight)
     exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
