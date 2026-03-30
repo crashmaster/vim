@@ -11,4 +11,3 @@ for config in split(globpath("$HOME/.vim/config", "*.vim"), "\n")
         call SourceSiteConfig(config)
     endif
 endfor
-

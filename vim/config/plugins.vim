@@ -1,48 +1,62 @@
-" {{{ pathogen
-if !filereadable($HOME . "/.vim/autoload/pathogen.vim")
-    echom expand("%:p:t") . ": pathogen unavailable"
-else
-    execute pathogen#infect()
-endif
-" }}}
+" Vim 8 native packages: plugins live in ~/.vim/pack/plugins/start/
 
-" {{{ YouCompleteMe
-if !filereadable($HOME . "/.vim/bundle/YouCompleteMe/plugin/youcompleteme.vim")
-    echom expand("%:p:t") . ": youcompleteme unavailable"
-else
-    let g:ycm_confirm_extra_conf = 0
-    let g:ycm_add_preview_to_completeopt = 0
-    let g:ycm_complete_in_comments = 1
-    let g:ycm_complete_in_strings = 1
-    let g:ycm_collect_identifiers_from_comments_and_strings = 1
-    let g:ycm_filetype_whitelist = { 'c': 1, 'cpp': 1, 'python': 1 }
-    let g:ycm_allow_changing_updatetime = 0
-
-    nnoremap <leader>q :YcmCompleter GoToDefinitionElseDeclaration<CR>
-    nnoremap <leader>w :YcmCompleter GoToDeclaration<CR>
-    nnoremap <leader>e :YcmCompleter GoToDefinition<CR>
-endif
-" }}}
-
-" {{{ syntastic
-if !filereadable($HOME."/.vim/bundle/syntastic/plugin/syntastic.vim")
-    echom expand("%:p:t") . ": syntastic unavailable"
+" {{{ ale
+if !filereadable($HOME . "/.vim/pack/plugins/start/ale/plugin/ale.vim")
+    echom expand("%:p:t") . ": ale unavailable"
 else
     highlight SignColumn ctermbg=None
-    let g:syntastic_error_symbol = 'E▸'
-    let g:syntastic_warning_symbol = 'W▸'
-    let g:syntastic_style_error_symbol = 'e▸'
-    let g:syntastic_style_warning_symbol = 'w▸'
-    let g:syntastic_sh_checkers = ['sh', 'shellcheck']
-    let g:syntastic_python_pylama_args = '-l mccabe,pylint'
-    let g:syntastic_python_checkers = ['python', 'frosted', 'pycodestyle', 'pylama', 'py3kwarn']
-    let g:syntastic_java_checkers=[]
-    let g:syntastic_check_on_open = 0
-    let g:syntastic_enable_signs = 1
-    let g:syntastic_enable_balloons = 0
-    let g:syntastic_enable_highlighting = 1
-    let g:syntastic_always_populate_loc_list = 1
-    let g:syntastic_auto_loc_list = 1
+    let g:ale_sign_error = 'E▸'
+    let g:ale_sign_warning = 'W▸'
+    let g:ale_sign_style_error = 'e▸'
+    let g:ale_sign_style_warning = 'w▸'
+    let g:ale_open_list = 1
+    let g:ale_lint_on_enter = 0
+    let g:ale_disable_lsp = 1
+endif
+" }}}
+
+" {{{ coc.nvim
+if !filereadable($HOME . "/.vim/pack/plugins/start/coc.nvim/plugin/coc.vim")
+    echom expand("%:p:t") . ": coc.nvim unavailable"
+else
+    let g:coc_global_extensions = [
+        \ 'coc-pyright',
+        \ 'coc-rust-analyzer',
+        \ 'coc-clangd',
+        \ ]
+
+    " Use tab for trigger completion
+    inoremap <silent><expr> <TAB>
+        \ coc#pum#visible() ? coc#pum#next(1) :
+        \ "\<TAB>"
+    inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+    " Confirm completion with Enter
+    inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+        \ : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+    " GoTo navigation
+    nmap <silent> gd <Plug>(coc-definition)
+    nmap <silent> gy <Plug>(coc-type-definition)
+    nmap <silent> gi <Plug>(coc-implementation)
+    nmap <silent> gr <Plug>(coc-references)
+
+    " Show documentation in preview window
+    nnoremap <silent> K :call ShowDocumentation()<CR>
+    function! ShowDocumentation()
+        if CocAction('hasProvider', 'hover')
+            call CocActionAsync('doHover')
+        else
+            call feedkeys('K', 'in')
+        endif
+    endfunction
+
+    " Symbol renaming
+    nmap <leader>rn <Plug>(coc-rename)
+
+    " Diagnostics navigation
+    nmap <silent> [g <Plug>(coc-diagnostic-prev)
+    nmap <silent> ]g <Plug>(coc-diagnostic-next)
 endif
 " }}}
 

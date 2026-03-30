@@ -1,2 +1,2 @@
-set list
-set listchars=tab:>\ 
+setlocal list
+setlocal listchars=tab:>\ 

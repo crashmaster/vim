@@ -4,14 +4,10 @@ setlocal softtabstop=2
 setlocal autoindent          " Copy indent from current line when starting a new one
 setlocal cindent             " Enables automatic C program indenting
 setlocal cinoptions=(0       " Some fine-tuning for cindent
-
-if version >= 703
-  set textwidth=79
-  set formatoptions-=t
-  set colorcolumn=+1
-endif
+setlocal textwidth=79
+setlocal formatoptions-=t
+setlocal colorcolumn=+1
 
 if exists("*SourceSiteConfig")
     call SourceSiteConfig(escape(expand('<sfile>:p'), '\'))
 endif
-

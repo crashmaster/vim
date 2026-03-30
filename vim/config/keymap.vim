@@ -3,10 +3,10 @@
 " Switch buffer back and forth:
 nnoremap <leader><leader> :b#<CR>
 
-" Search for the text under to cursos till the end of line
+" Search for the text under the cursor till the end of line
 nnoremap <silent><leader>z :SelectRobotKeyword<CR>
 
-" Toggel spell checker
+" Toggle spell checker
 nnoremap <silent><leader>a :set spell!<CR>
 
 " Reselect visual block after indent/outdent
@@ -18,3 +18,6 @@ map Y y$
 
 " Clear search highlights
 noremap <silent><leader>/ :nohls<CR>
+
+" Toggle paste mode
+nnoremap <leader>p :set paste!<CR>

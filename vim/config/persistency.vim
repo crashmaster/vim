@@ -6,6 +6,7 @@ set history=5000        " Size of the history table of the entered commands
 set noswapfile          " No swap file, what could go wrong? :)
 set nobackup            " No backup
 set writebackup         " Do not make a backup before overwriting a file
+set autoread            " Auto-reload files changed outside Vim
 
 " If persistent undo is available, then use it. This is the only way I could
 " figure out for keeping the undo information, when switching buffers.
@@ -24,4 +25,4 @@ if has("persistent_undo")
 endif
 
 set hidden              " Do not unload buffer, when abandoned
-
+set undolevels=10000    " Deep undo history

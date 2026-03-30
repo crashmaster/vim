@@ -2,14 +2,10 @@ setlocal shiftwidth=4
 setlocal tabstop=4
 setlocal softtabstop=4
 setlocal smarttab
-
-if version >= 703
-  set textwidth=99
-  set formatoptions-=t
-  set colorcolumn=+1
-endif
+setlocal textwidth=99
+setlocal formatoptions-=t
+setlocal colorcolumn=+1
 
 if exists("*SourceSiteConfig")
     call SourceSiteConfig(escape(expand('<sfile>:p'), '\'))
 endif
-

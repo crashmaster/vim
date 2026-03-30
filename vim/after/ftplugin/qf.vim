@@ -1,8 +1,7 @@
-setlocal colorcolumn=""
+setlocal colorcolumn=
 setlocal numberwidth=3
-set wrap
+setlocal wrap
 
 if exists("*SourceSiteConfig")
     call SourceSiteConfig(escape(expand('<sfile>:p'), '\'))
 endif
-
