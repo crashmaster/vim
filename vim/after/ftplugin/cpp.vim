@@ -4,7 +4,7 @@ setlocal softtabstop=2
 setlocal autoindent          " Copy indent from current line when starting a new one
 setlocal cindent             " Enables automatic C program indenting
 setlocal cinoptions=(0       " Some fine-tuning for cindent
-setlocal textwidth=79
+setlocal textwidth=80
 setlocal formatoptions-=t
 setlocal colorcolumn=+1
 
