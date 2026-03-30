@@ -18,8 +18,9 @@ Use `-p` for pretend (dry-run) mode: `./install.sh -p -i`
 
 ## LSP Dependencies
 
-coc.nvim provides LSP support. The following language servers need to be
-installed separately:
+coc.nvim provides LSP support and requires `nodejs` (v18+).
+
+The following language servers need to be installed separately:
 
 - **C/C++**: `clangd` (install matching version with your `clang`, e.g. `sudo apt install clangd-18`,
   then register it: `sudo update-alternatives --install /usr/bin/clangd clangd /bin/clangd-18 100`)

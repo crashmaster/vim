@@ -21,6 +21,7 @@ set ttimeoutlen=50      " Fast escape key response
 
 set foldmethod=marker
 set nrformats-=octal    " Treat 007 as decimal, not octal
+set clipboard=unnamedplus " Use system clipboard for yank/paste
 
 set wildmenu            " Visual completion menu in command mode
 set wildmode=longest:full,full
