@@ -12,6 +12,7 @@ else
     let g:ale_open_list = 1
     let g:ale_lint_on_enter = 0
     let g:ale_disable_lsp = 1
+    let g:ale_linters = {'python': ['ruff']}
 endif
 " }}}
 
@@ -41,6 +42,12 @@ else
     nmap <silent> gi <Plug>(coc-implementation)
     nmap <silent> gr <Plug>(coc-references)
 
+    " Alternate leader-based navigation
+    nmap <silent> <leader>d <Plug>(coc-definition)
+    nmap <silent> <leader>t <Plug>(coc-type-definition)
+    nmap <silent> <leader>i <Plug>(coc-implementation)
+    nmap <silent> <leader>r <Plug>(coc-references)
+
     " Show documentation in preview window
     nnoremap <silent> K :call ShowDocumentation()<CR>
     function! ShowDocumentation()
@@ -57,6 +64,10 @@ else
     " Diagnostics navigation
     nmap <silent> [g <Plug>(coc-diagnostic-prev)
     nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+    " Toggle inlay hints
+    call coc#config('inlayHint.display', v:false)
+    nnoremap <silent> <leader>h :CocCommand document.toggleInlayHint<CR>
 endif
 " }}}
 

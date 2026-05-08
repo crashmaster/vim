@@ -1,10 +1,10 @@
 " Vim color file
 " Name:       inkpot.vim
-" Maintainer: Ciaran McCreesh <ciaran.mccreesh@googlemail.com>
-" Homepage:   http://github.com/ciaranm/inkpot/
+" Original:   Ciaran McCreesh <ciaran.mccreesh@googlemail.com>
+"             http://github.com/ciaranm/inkpot/
 "
-" This should work in xterm (256 colour mode).
-" It won't work in 8/16 colour terminals.
+" Heavily modified from the original. Only 256-color cterm values remain;
+" GUI and 88-color support removed, many highlight groups rewritten/added.
 "
 " To use a black background, :let g:inkpot_black_background = 1
 

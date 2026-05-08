@@ -16,6 +16,15 @@ Use `-p` for pretend (dry-run) mode: `./install.sh -p -i`
 ./install.sh -u
 ```
 
+## Plugins
+
+The following plugins are installed automatically by `install.sh`:
+
+- **[ale](https://github.com/dense-analysis/ale)**: Asynchronous linting (LSP disabled, used for linting only)
+- **[vim-fugitive](https://github.com/tpope/vim-fugitive)**: Git integration
+- **[vim-mustache-handlebars](https://github.com/mustache/vim-mustache-handlebars)**: Mustache/Handlebars syntax and indentation
+- **[coc.nvim](https://github.com/neoclide/coc.nvim)**: LSP support (completion, go-to-definition, diagnostics, rename)
+
 ## LSP Dependencies
 
 coc.nvim provides LSP support and requires `nodejs` (v18+).
